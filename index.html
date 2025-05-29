@@ -22,14 +22,15 @@
             <canvas id="selectionCanvas"></canvas>
         </div>
         <p id="status">在上方預覽畫面中，用滑鼠拖曳圈選經驗值所在的區域。</p>
+        <p>提示：如果有時候辨識失敗，建議可以框得更精確，只包含數字的部分。</p>
         <img id="capturedImagePreview" src="#" alt="擷取區域預覽" style="display:none;">
     </div>
 
     <div id="resultsArea">
         <h2>辨識紀錄</h2>
+        <div>每 60 秒自動記錄一次</div>
         <div id="ocrStatus"></div>
-        <ul id="xpDisplayArea">
-            </ul>
+        <table id="xpDisplayTable"></table>
     </div>
     <script src='./main.js'></script>
 </body>

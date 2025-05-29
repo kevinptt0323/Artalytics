@@ -3,13 +3,14 @@ const videoElement = document.getElementById('gameFeed');
 const selectionCanvas = document.getElementById('selectionCanvas');
 const ctxSelection = selectionCanvas.getContext('2d');
 const capturedImagePreview = document.getElementById('capturedImagePreview');
-const xpDisplayArea = document.getElementById('xpDisplayArea');
+const xpDisplayTable = document.getElementById('xpDisplayTable');
 const statusElement = document.getElementById('status');
 const ocrStatusElement = document.getElementById('ocrStatus');
 const videoContainer = document.getElementById('videoContainer');
 
 let stream = null;
 let currentSelectionRect = null;
+let captureIntervalHandler = null;
 
 async function startGameCapture() {
     statusElement.textContent = "正在請求畫面擷取權限...";
@@ -93,7 +94,13 @@ function prepareSelection() {
             currentSelectionRect = { x, y, width, height };
             console.log("選取區域 (相對於視訊原始解析度):", currentSelectionRect);
             statusElement.textContent = `已選取區域: X:${Math.round(x)}, Y:${Math.round(y)}, W:${Math.round(width)}, H:${Math.round(height)}. 正在擷取圖像...`;
+            if (captureIntervalHandler) {
+                clearInterval(captureIntervalHandler);
+            }
             captureSelectedArea(currentSelectionRect);
+            captureIntervalHandler = setInterval(() => {
+                captureSelectedArea(currentSelectionRect);
+            }, 60 * 1000)
         } else {
             statusElement.textContent = "選取區域太小，請重新選取。";
             currentSelectionRect = null;
@@ -155,7 +162,7 @@ async function initializeOCRWorker() {
             },
 
         }, {
-            tessedit_char_whitelist: '[].%0123456789',
+            tessedit_char_whitelist: '0123456789[]%.',
         });
 
         isWorkerInitialized = true;
@@ -191,12 +198,8 @@ async function performOCR(imageDataUrl) {
 
     try {
         const { data: { text, confidence } } = await ocrWorker.recognize(imageDataUrl);
+        const cleanedText = text.trim().replace(/\D\[\]\.%/g, '');
 
-        const cleanedText = text.trim().replace(/\[\]\.%\D/g, '');
-
-        if (ocrStatusElement) {
-            ocrStatusElement.textContent = `OCR 結果: ${cleanedText || "未辨識到數字"} (信心度: ${confidence !== undefined ? confidence.toFixed(1) + '%' : 'N/A'})`;
-        }
         console.log(`OCR 原始文字: "${text.trim()}", 清理後: "${cleanedText}", 信心度: ${confidence}`);
 
         if (cleanedText) {
@@ -212,10 +215,16 @@ async function performOCR(imageDataUrl) {
 }
 
 let xpRecords = [];
-function recordXP(xpValue) {
-    if (xpValue) {
+const reMatchXP = /(\d+)\[([\d.]+%)\]?/;
+function recordXP(text) {
+    if (!text) {
+        return;
+    }
+    const match = text.match(reMatchXP);
+    if (match) {
         const newRecord = {
-            value: xpValue,
+            xp: match[1],
+            xpPercentage: match[2],
             timestamp: new Date().toLocaleString()
         };
         xpRecords.push(newRecord);
@@ -226,7 +235,7 @@ function recordXP(xpValue) {
 }
 
 function updateXPDisplay() {
-    xpDisplayArea.innerHTML = xpRecords.map(r => `<li>XP: <strong>${r.value}</strong> (記錄於 ${r.timestamp})</li>`).join('');
+    xpDisplayTable.innerHTML = xpRecords.map(({xp, xpPercentage, timestamp}) => `<tr><td>${timestamp}</td><td>${xp}</td><td>${xpPercentage}</td></tr>`).join("");
 }
 
 // window.onload = () => {
