@@ -4,33 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Artalytics</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="./style.css">
     <script src='https://cdn.jsdelivr.net/npm/tesseract.js@6.0.1/dist/tesseract.min.js'></script>
 </head>
 <body>
-    <h1>Artale 經驗值追蹤器</h1>
-
-    <div id="controls">
-        <button id="startCaptureButton">開始擷取遊戲畫面</button>
-        <p>請點擊按鈕並選擇您的 Artale 遊戲視窗。</p>
-    </div>
-
-    <div id="displayArea">
-        <h2>遊戲畫面預覽與選取區域</h2>
-        <div id="videoContainer">
-            <video id="gameFeed" playsinline muted></video>
-            <canvas id="selectionCanvas"></canvas>
+    <div id="main">
+        <div id="content">
+            <div id="videoContainer">
+                <div id="videoArea">
+                    <video id="gameFeed" playsinline muted></video>
+                    <canvas id="selectionCanvas"></canvas>
+                </div>
+            </div>
         </div>
-        <p id="status">在上方預覽畫面中，用滑鼠拖曳圈選經驗值所在的區域。</p>
-        <p>提示：如果有時候辨識失敗，建議可以框得更精確，只包含數字的部分。</p>
-        <img id="capturedImagePreview" src="#" alt="擷取區域預覽" style="display:none;">
-    </div>
-
-    <div id="resultsArea">
-        <h2>辨識紀錄</h2>
-        <div>每 60 秒自動記錄一次</div>
-        <div id="ocrStatus"></div>
-        <table id="xpDisplayTable"></table>
+        <div id="rightNav">
+            <div class="block" id="controls">
+                <button id="startCaptureButton">開始擷取遊戲畫面</button>
+                <ol>
+                    <li>請點擊按鈕並選擇您的 Artale 遊戲視窗。</li>
+                    <li>在預覽畫面中，用滑鼠拖曳圈選經驗值所在的區域。</li>
+                </ol>
+                <p>提示：如果有時候辨識失敗，建議可以框得更精確，只包含數字的部分。</p>
+                <p id="status"></p>
+                <img id="capturedImagePreview" src="#" alt="擷取區域預覽" style="display:none;">
+            </div>
+            <div class="block" id="resultsArea">
+                <h2>辨識紀錄</h2>
+                <div>每 60 秒自動記錄一次</div>
+                <div id="ocrStatus"></div>
+                <table id="xpDisplayTable"></table>
+            </div>
+        </div>
     </div>
     <script src='./main.js'></script>
 </body>

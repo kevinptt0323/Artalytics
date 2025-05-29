@@ -6,7 +6,6 @@ const capturedImagePreview = document.getElementById('capturedImagePreview');
 const xpDisplayTable = document.getElementById('xpDisplayTable');
 const statusElement = document.getElementById('status');
 const ocrStatusElement = document.getElementById('ocrStatus');
-const videoContainer = document.getElementById('videoContainer');
 
 let stream = null;
 let currentSelectionRect = null;

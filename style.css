@@ -1,33 +1,77 @@
 body {
     font-family: sans-serif;
-    margin: 20px;
     background-color: #f4f4f4;
     color: #333;
+    height: 100vh;
+    height: 100dvh;
+    max-height: 100vh;
+    max-height: 100dvh;
 }
-#controls, #displayArea, #resultsArea {
+#main {
+    display: flex;
+    height: 100%;
+}
+
+/* Left */
+#content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    max-height: 100%;
+}
+#videoContainer {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+#videoArea {
+    position: relative;
+}
+#videoArea video {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    /* max-width: 100% */
+    background: #000;
+}
+#videoArea canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 2px dashed red;
+    box-sizing: border-box;
+    cursor: crosshair;
+}
+
+/* Right */
+#rightNav {
+    width: 400px;
+    max-height: 100%;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.block {
     margin-bottom: 20px;
     padding: 15px;
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
-#gameFeed {
-    max-width: 100%;
-    border: 1px solid #ccc;
-    display: block;
+#status {
     margin-top: 10px;
+    font-style: italic;
+    color: #555;
 }
-#selectionCanvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    border: 2px dashed red;
-    cursor: crosshair;
-}
-#videoContainer {
-    position: relative;
-    width: fit-content;
-    margin-bottom: 10px;
+#capturedImagePreview {
+    margin-top: 10px;
+    max-width: 300px;
 }
 button {
     padding: 10px 15px;
@@ -56,14 +100,3 @@ tr {
 tr:nth-of-type(even) td {
     background-color:#f3f3f3;
 }
-#status {
-    margin-top: 10px;
-    font-style: italic;
-    color: #555;
-}
-#capturedImagePreview {
-    margin-top: 10px;
-    max-width: 300px;
-    border: 1px solid #ddd;
-}
-
