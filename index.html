@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artalytics</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src='https://cdn.jsdelivr.net/npm/tesseract.js@6.0.1/dist/tesseract.min.js'></script>
+</head>
+<body>
+    <h1>Artale 經驗值追蹤器</h1>
+
+    <div id="controls">
+        <button id="startCaptureButton">開始擷取遊戲畫面</button>
+        <p>請點擊按鈕並選擇您的 Artale 遊戲視窗。</p>
+    </div>
+
+    <div id="displayArea">
+        <h2>遊戲畫面預覽與選取區域</h2>
+        <div id="videoContainer">
+            <video id="gameFeed" playsinline muted></video>
+            <canvas id="selectionCanvas"></canvas>
+        </div>
+        <p id="status">在上方預覽畫面中，用滑鼠拖曳圈選經驗值所在的區域。</p>
+        <img id="capturedImagePreview" src="#" alt="擷取區域預覽" style="display:none;">
+    </div>
+
+    <div id="resultsArea">
+        <h2>辨識紀錄</h2>
+        <div id="ocrStatus"></div>
+        <ul id="xpDisplayArea">
+            </ul>
+    </div>
+    <script src='./main.js'></script>
+</body>
+</html>
