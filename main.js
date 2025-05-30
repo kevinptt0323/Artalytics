@@ -1,5 +1,6 @@
 const selectCaptureButton = document.getElementById('selectCaptureButton');
 const toggleCaptureButton = document.getElementById('toggleCaptureButton');
+const clearResultButton = document.getElementById('clearResultButton');
 const videoElement = document.getElementById('gameFeed');
 const selectionCanvas = document.getElementById('selectionCanvas');
 const ctxSelection = selectionCanvas.getContext('2d');
@@ -249,6 +250,11 @@ function updateXPDisplay() {
     xpDisplayTable.innerHTML = xpRecords.map(({xp, xpPercentage, timestamp}) => `<tr><td>${timestamp}</td><td>${xp}</td><td>${xpPercentage}</td></tr>`).join("");
 }
 
+function clearResult() {
+    xpRecords = [];
+    updateXPDisplay();
+}
+
 // window.onload = () => {
 //     const savedRecords = localStorage.getItem('artaleXpRecords');
 //     if (savedRecords) {
@@ -258,7 +264,8 @@ function updateXPDisplay() {
 // };
 
 selectCaptureButton.addEventListener('click', startGameCapture);
-toggleCaptureButton.addEventListener('click', toggleCapture)
+toggleCaptureButton.addEventListener('click', toggleCapture);
+clearResultButton.addEventListener('click', clearResult);
 
 window.addEventListener('resize', () => {
     if (videoElement.srcObject) {
