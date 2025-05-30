@@ -1,4 +1,5 @@
-const startCaptureButton = document.getElementById('startCaptureButton');
+const selectCaptureButton = document.getElementById('selectCaptureButton');
+const toggleCaptureButton = document.getElementById('toggleCaptureButton');
 const videoElement = document.getElementById('gameFeed');
 const selectionCanvas = document.getElementById('selectionCanvas');
 const ctxSelection = selectionCanvas.getContext('2d');
@@ -92,20 +93,31 @@ function prepareSelection() {
         if (width > 20 && height > 20) {
             currentSelectionRect = { x, y, width, height };
             console.log("選取區域 (相對於視訊原始解析度):", currentSelectionRect);
-            statusElement.textContent = `已選取區域: X:${Math.round(x)}, Y:${Math.round(y)}, W:${Math.round(width)}, H:${Math.round(height)}. 正在擷取圖像...`;
-            if (captureIntervalHandler) {
-                clearInterval(captureIntervalHandler);
-            }
-            captureSelectedArea(currentSelectionRect);
-            captureIntervalHandler = setInterval(() => {
-                captureSelectedArea(currentSelectionRect);
-            }, 60 * 1000)
+            statusElement.textContent = `已選取區域: X:${Math.round(x)}, Y:${Math.round(y)}, W:${Math.round(width)}, H:${Math.round(height)}.`;
         } else {
             statusElement.textContent = "選取區域太小，請重新選取。";
             currentSelectionRect = null;
         }
     };
 }
+
+function toggleCapture() {
+    if (!currentSelectionRect) {
+        return;
+    }
+    if (captureIntervalHandler) {
+        clearInterval(captureIntervalHandler);
+        captureIntervalHandler = null;
+        toggleCaptureButton.innerText = "開始記錄";
+    } else {
+        captureSelectedArea(currentSelectionRect);
+        captureIntervalHandler = setInterval(() => {
+            captureSelectedArea(currentSelectionRect);
+        }, 60 * 1000)
+        toggleCaptureButton.innerText = "暫停記錄";
+    }
+}
+
 
 async function captureSelectedArea(rect) {
     if (!rect || rect.width === 0 || rect.height === 0 || !videoElement.srcObject) {
@@ -245,7 +257,8 @@ function updateXPDisplay() {
 //     }
 // };
 
-startCaptureButton.addEventListener('click', startGameCapture);
+selectCaptureButton.addEventListener('click', startGameCapture);
+toggleCaptureButton.addEventListener('click', toggleCapture)
 
 window.addEventListener('resize', () => {
     if (videoElement.srcObject) {
