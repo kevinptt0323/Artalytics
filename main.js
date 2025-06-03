@@ -227,18 +227,28 @@ async function performOCR(imageDataUrl) {
 }
 
 let xpRecords = [];
+let previousXp = -1
 const reMatchXP = /(\d+)\[([\d.]+%)\]?/;
+const timeOptions = {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false // Use 24-hour format
+};
 function recordXP(text) {
     if (!text) {
         return;
     }
     const match = text.match(reMatchXP);
     if (match) {
+        parsedXp = Number(match[1])
         const newRecord = {
-            xp: match[1],
+            xp: parsedXp,
             xpPercentage: match[2],
-            timestamp: new Date().toLocaleString()
+            timestamp: new Date().toLocaleTimeString('en-US', timeOptions),
+            xpDiff: (previousXp == -1) ? 0 : parsedXp - previousXp
         };
+        previousXp = parsedXp
         xpRecords.push(newRecord);
         console.log("經驗值已記錄:", newRecord);
         updateXPDisplay();
@@ -247,7 +257,8 @@ function recordXP(text) {
 }
 
 function updateXPDisplay() {
-    xpDisplayTable.innerHTML = xpRecords.map(({xp, xpPercentage, timestamp}) => `<tr><td>${timestamp}</td><td>${xp}</td><td>${xpPercentage}</td></tr>`).join("");
+    const reversedXpRecords = [...xpRecords].reverse();
+    xpDisplayTable.innerHTML = reversedXpRecords.map(({xp, xpPercentage, timestamp, xpDiff}) => `<tr><td>${timestamp}</td><td>${xp.toLocaleString()}</td><td>${xpPercentage}</td><td>${(xpDiff*10).toLocaleString()}</td></tr>`).join("");
 }
 
 function clearResult() {
