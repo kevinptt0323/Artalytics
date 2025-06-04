@@ -35,7 +35,17 @@
                 <button id="clearResultButton">清除記錄</button>
                 <div>每 60 秒自動記錄一次</div>
                 <div id="ocrStatus"></div>
-                <table id="xpDisplayTable"></table>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>EXP</th>
+                            <th>EXP %</th>
+                            <th>EXP Diff (10min)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="xpDisplayTable"></tbody>
+                </table>
             </div>
         </div>
     </div>
